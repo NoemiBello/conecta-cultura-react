@@ -3,6 +3,8 @@ import Cabecera from "./components/Cabecera";
 import Navegacion from "./components/Navegacion";
 import Cartelera from "./pages/Cartelera";
 import { actividades } from "./data/actividades";
+import MisInscripciones from "./pages/MisInscripciones";
+
 
 function App() {
   const [categoria, setCategoria] = useState("Todas");
@@ -12,10 +14,10 @@ function App() {
     : actividades.filter((actividad) => actividad.categoria === categoria);
 
   const [inscripciones, setInscripciones] = useState(() => {
-  const guardadas = localStorage.getItem("inscripciones");
-  return guardadas ? JSON.parse(guardadas) : [];
-});
-  
+    const guardadas = localStorage.getItem("inscripciones");
+    return guardadas ? JSON.parse(guardadas) : [];
+  });
+
 
   function inscribir(actividad) {
     const yaExiste = inscripciones.some((item) => item.id === actividad.id);
@@ -32,11 +34,11 @@ function App() {
   }
 
   useEffect(() => {
-  localStorage.setItem(
-    "inscripciones",
-    JSON.stringify(inscripciones)
-  );
-}, [inscripciones]);
+    localStorage.setItem(
+      "inscripciones",
+      JSON.stringify(inscripciones)
+    );
+  }, [inscripciones]);
 
 
   return (
@@ -52,12 +54,18 @@ function App() {
           <option>Todas</option>
           <option>Música</option>
           <option>Artes visuales</option>
+          <option>Fotografía</option>
+          <option>Teatro</option>
         </select>
         <Cartelera
           actividades={visibles}
           onInscribir={inscribir}
         />
       </main>
+      <MisInscripciones
+        inscripciones={inscripciones}
+        onEliminar={eliminarInscripcion}
+      />
     </>
   );
 }
